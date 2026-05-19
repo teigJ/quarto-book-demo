@@ -1,0 +1,23 @@
+# Embedded C++ Code in a Quarto book {.unnumbered}
+This example uses:  
+[Miniforge](https://github.com/conda-forge/miniforge) as an installer for  
+[Mamba](https://github.com/mamba-org/mamba) as a package manager so  
+[xeus-cling](https://github.com/jupyter-xeus/xeus-cling) can run C++ through  
+[JupyterLab](https://github.com/jupyterlab/jupyterlab) under the hood, and  
+[Quarto](https://github.com/quarto-dev) can compile it into an HTML page
+
+Below is a demonstration of some C++ code followed by a Jupyter shortcut.  
+Omitting the semi-colon will simply print the value of what is written  
+```{cpp}
+int i = 10;
+i
+```
+
+### This is another embedded code example that is a *little* more involved
+```{cpp}
+#include <iostream>
+
+std::cout << "Hello from xeus-cling";
+```
+
+#### The bits of embedded code are very clearly best intended to be small demo code segments instead of full blown assigment vectors.

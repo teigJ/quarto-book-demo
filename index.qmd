@@ -1,0 +1,10 @@
+# Preface {.unnumbered}
+
+This is a Quarto book.
+
+The Preface, Introduction, Summary, and References page are automatically generated defaults for a Quarto book template, and I've left them to further demonstrate the structure.  
+The other two pages I wrote myself to demo some features and detail my experience installing a local LLM on Morpheus.  
+
+To see the actual book files, I have put them in a [GitHub repository here](https://github.com/teigJ/quarto-book-demo.git)  
+
+To learn more about Quarto books visit <https://quarto.org/docs/books>.

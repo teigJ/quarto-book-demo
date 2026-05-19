@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "book-test",
+    "section": "",
+    "text": "Preface\nThis is a Quarto book.\nThe Preface, Introduction, Summary, and References page are automatically generated defaults for a Quarto book template, and I’ve left them to further demonstrate the structure.\nThe other two pages I wrote myself to demo some features and detail my experience installing a local LLM on Morpheus.\nTo see the actual book files, I have put them in a GitHub repository here\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "embedded-cpp-demo.html",
+    "href": "embedded-cpp-demo.html",
+    "title": "Embedded C++ Code in a Quarto book",
+    "section": "",
+    "text": "This example uses:\nMiniforge as an installer for\nMamba as a package manager so\nxeus-cling can run C++ through\nJupyterLab under the hood, and\nQuarto can compile it into an HTML page\nBelow is a demonstration of some C++ code followed by a Jupyter shortcut.\nOmitting the semi-colon will simply print the value of what is written\n\nint i = 10;\ni\n\n10\n\n\n\nThis is another embedded code example that is a little more involved\n\n#include &lt;iostream&gt;\n\nstd::cout &lt;&lt; \"Hello from xeus-cling\";\n\nHello from xeus-cling\n\n\n\nThe bits of embedded code are very clearly best intended to be small demo code segments instead of full blown assigment vectors.",
+    "crumbs": [
+      "Embedded C++ Code in a Quarto book"
+    ]
+  },
+  {
+    "objectID": "local-llm-morpheus-install.html",
+    "href": "local-llm-morpheus-install.html",
+    "title": "Locally Run LLM on Morpheus",
+    "section": "",
+    "text": "Testing Handwriting Transliteration with Gemma4:26b\nI installed ollama and gemma4:26b as a test of running an LLM locally on the Weber server.\nMy summary is that it performed phenomenally and that I was very surprised at how well it did with the model size, though the Weber server are very clearly powerful.\nI ran the same handwriting test that I did on gemma4-e2b, and on the “Big 3” proprietary models\nThe results were identical to the proprietary models",
+    "crumbs": [
+      "Locally Run LLM on Morpheus"
+    ]
+  },
+  {
+    "objectID": "local-llm-morpheus-install.html#testing-full-syntax-c-handwriting-to-text",
+    "href": "local-llm-morpheus-install.html#testing-full-syntax-c-handwriting-to-text",
+    "title": "Locally Run LLM on Morpheus",
+    "section": "Testing Full Syntax C++ Handwriting to Text",
+    "text": "Testing Full Syntax C++ Handwriting to Text\n\nModelfile creation\nI created a Modelfile that allows you to “bake in” certain parameters like temperature or top_p and certain system instructions that will alter the behavior of the model\n\nAny PARAMETER in a Modelfile can be set at runtime, but doing this allows it to automatically be set\n\nMy Modelfile is very simple, but it can already be seen how it alters its behaviour (and not always in a good way)\n\n\nThe Handwriting Code Sample\n\n\n\ncode-to-text\n\n\n\nHandwritten C++ to Text without Modelfile config\n\nFor both tests I will have “thinking” on\n\n\n#include &lt;bits/stdc++.h&gt;\nusing namespace std;\n\n//int main() {\n    int n = 29;\n    int cnt = 0;\n\n    if (n &lt;= 1) {\n        cout &lt;&lt; n &lt;&lt; \" is NOT prime\";\n    }\n    else {\n        // Loop to count divisors\n        for (int i = 2; i * i &lt;= n; i++) {\n            if (n % i == 0) {\n                cnt++;\n            }\n        }\n\n        if (cnt &gt; 0) // n is divisible by more than 2 nums\n            cout &lt;&lt; n &lt;&lt; \" is NOT prime\";\n        else\n            cout &lt;&lt; n &lt;&lt; \" is prime\";\n    }\n\n    return 0;\n//}\n\n29 is prime\n\n\n0\n\n\n\nThe above snippet should also have run at the time of the compilation of the notebook\nI had to manually comment out the main definition and closing bracket because the interpreter doesn’t like the main() definition for some reason\n\n\n\nHandwritten C++ to Text WITH Modelfile config\n\nI will not be attempting to run the code here\nI also want to note that it initially output it without tabs, but after I asked for it to put the tabs in “like in the image” it did.\n\n#include &lt;bits/stdc++.h&gt;\nusing namespace std;\n\nint main() {\n    int n = 29;\n    int cnt = 0;\n\n    if (n &lt;= 1)\n        cout &lt;&lt; n &lt;&lt; \" is NOT prime\";\n    else {\n        for (int i = 2; i * i &lt;= n; i++) { // Count divisors\n            if (n % i == 0)\n                cnt++;\n        }\n\n        if (cnt &gt; 0) // n is divisible by more than 2 nums\n            Cout &lt;&lt; n &lt;&lt; \" is NOT prime\";\n        else\n            Cout &lt;&lt; n &lt;&lt; \" is prime\";\n    }\n    return 0;\n}\n\n\n\nNotes on the output\nNo Modelfile\n- The config-less model automatically added curly braces to the single line if statements\n- It correctly interpreted the written handwriting\n- It explained (not included here) what the algorithm was doing\n- Even the Big O for the solution O(\\(\\sqrt{n}\\))\nWith Modelfile\n- Did not add curly braces or fix issues (as specified by the config “do not fix bugs”)\n- It did incorrectly interpret cout as Cout, and it interpretted its mistake in reading it at a mistake on behalf of the student:\nThe user's code has `Cout` (capital C). I must not fix this.\n- From the “thinking” output of the model\n- This makes the output worse, but I think that the model giving grace toward the student during the transliteration phase could fix this issue\n\nThe Stats:\nNo Modelfile\ntotal duration:       17.023732221s\nload duration:        351.532045ms\nprompt eval count:    283 token(s)\nprompt eval duration: 69.10374ms\nprompt eval rate:     4095.29 tokens/s\neval count:           1815 token(s)\neval duration:        13.914118573s\neval rate:            130.44 tokens/s\nWith Modelfile\ntotal duration:       21.960650471s\nload duration:        339.849685ms\nprompt eval count:    602 token(s)\nprompt eval duration: 53.818034ms\nprompt eval rate:     11185.84 tokens/s\neval count:           2370 token(s)\neval duration:        18.37346049s\neval rate:            128.99 tokens/s\n\nThe model without the Modelfile configuration ran more quickly and accurately, but did help fix things as expected.\n\nI suspect that the smaller context window and less “thinking” about how to alter its output made it output more quickly\n\nSometimes the “thinking” seems to trip the model up. Earlier, I was getting less accurate and much more expensive output with thinking on for the handwriting transliteration. I could explore this further in the future.",
+    "crumbs": [
+      "Locally Run LLM on Morpheus"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "2  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "References"
+    ]
+  }
+]
