@@ -1,0 +1,631 @@
+# Handwritten Code: Translation and Execution {.unnumbered}  
+## Execution Environment  
+
+- I have detailed some of the handwriting translation techiniques already  
+- So I'll start by explaining the execution environment that I build for the C++ code  
+
+### Podman container setup
+Podman is a rootless container alternative to Docker, and has nearly one-to-one support for Docker images.  
+
+For my image, I landed on an **Alpine**-based build for its small size, I install the `g++` compiler and `coreutils` inside it for its timeout utility.  
+
+I also point to an entrypoint script - `run.sh` - that dictates how the C++ file is compiled and where stdout and stdin are directed.  
+
+### Podman Run Options
+```bash
+podman run --rm \
+--network none \
+--read-only \
+--read-only-tmpfs=false \
+--tmpfs /tmp:size=50m \
+--memory 256m \
+--memory-swap 256m \
+--cpus 0.5 \
+--pids-limit 64 \
+--timeout 60 \
+--cap-drop ALL \
+--user sandbox \
+--security-opt no-new-privileges \
+-v ./hello.cpp:/sandbox/source.cpp:ro \
+sandbox:cpp
+```
+
+The command is very large, so I'll break it down flag by flag
+
+- `--rm`: deletes the container after it is done running  
+- `--network none`: disables all network functionality  
+- `--read-only`: makes the file system read-only  
+- `--read-only-tmpfs=false`: makes the temporary file system not read-only  
+- `--tmpfs /tmp:size=50m`: mounts the temporary file system with a 50 mb size restriction  
+- `--memory 256m`: restricts RAM usage to 256mb  
+- `--memory-swap 256m`: sets the swap to the same as the restriction, effectively disabling memory swap.  
+- `--cpus 0.5`: throttles the container to only use up to half a CPU  
+- `--timeout 60`: makes the container close itself after 60 seconds  
+- `--cap-drop ALL`: removes all Linux kernel capabilities and priviledges  
+- `--user sandbox`: assigns the sandbox user created during image generation  
+- `-v ./hello.cpp:/sandbox/source.cpp:ro`: 
+    - `./hello.cpp` is the example for the C++ file that is to be executed
+    - `/sandbox/source.cpp` copies and mounts the file with a consistent filename in the given location
+    - `ro` makes it read only.  
+- `sandbox:cpp` is the image name  
+
+There may be additional options that make it more secure, but this is what I decided to go with for now, and what I ran all my tests with.  
+
+### Manual Container Testing
+I wrote some tests that would require the podman container to stop them, and I will include more details of the results of the full pipeline using the handwritten versions later.  
+
+For now, I will say that I tested the memory limit, network connection, pid limit, read-only file system (outside of tmp), and compilation failure.  
+
+After some debugging of my `run.sh` script, it was handling everything properly as far as I could tell from my tests.  
+
+### Container Controller
+When doing the testing manually, I had very limited information and my control and sight over stdout and stderr was limited.  
+
+There also were several manual steps to execution, like making the cpp file readable.  
+
+To solve this, I made a controller that formatted the stdout and stderr, and handled the file readability  
+
+## Putting the Pieces Together   
+I now have a simple Python controller script that I can pass in a cpp file and it will compile and execute in a podman container and give me an output.  
+
+I also have ollama with a "custom" gemma4 model that will directly output a cpp file when I feed it an image and pipe its output into said file.  
+
+All I needed to do was put the two pieces together, and I would have a "image of handwritten code to code execution results" pipeline.  
+
+### My Pipeline Script
+First, I learned how to use ollama through its API to prompt the local model from inside a Python script. I also had to convert the prompt (and image using base64) into a json payload.  
+
+I store the returned code and harvest and print some statistics that the API returns.  
+Now that I have the code, I simply use the same function that I built earlier to run it inside a podman container and get the output.  
+
+I use my `pipeline.py` script to print things out and format them, but the assembly of all these components together really was that simple once I worked out some bugs.  
+
+**Here is an example of how it works using its actual output**
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/split-written-code-1.jpeg ../tj-ollama/img/split-written-code-2.jpeg 
+Sending 2 image(s) to Ollama (code-reader)...
+
+--- Ollama Stats ---
+Total time: 3.29s
+Model load: 0.43s
+Prompt tokens: 740
+Output tokens: 245
+--------------------
+
+Received 644 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <bits/stdc++.h>
+using namespace std;
+
+bool binarySearch(vector<int>& v, int low, int high, int target) {
+    if (low > high) {
+        return false;
+    }
+    int mid = ((high - low) / 2) + low;
+    if (v[mid] == target) {
+        return true;
+    }
+    if (v[mid] > target) {
+        return binarySearch(v, low, mid - 1, target);
+    }
+    return binarySearch(v, mid + 1, high, target);
+}
+
+int main() {
+    vector<int> v = {1, 2, 3, 4, 5, 8, 9, 11};
+    int target = 8;
+    if (binarySearch(v, 0, v.size() - 1, target)) {
+        cout << target << " found.";
+    } else {
+        cout << target << " Not found.";
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+8 found.
+```
+I pass in two images, the first containing everything up to the main method, and the second containing the main method.  
+
+The script then prints out the code and passes it into the podman container to compile and execute, which we can see it does, and then it prints the output.  
+
+## Test Results  
+Here, I'm going to include the results of all the tests for `code-reader` (gemma4:26b with Modelfile baked in) and `code-reader-qwen9b` (qwen3.5:9b with Modelfile baked in)  
+
+My summary is that qwen outperformed gemma in accuracy and speed by a significant margin based upon these tests, and it is also less expensive in every way.  
+
+The tests with `code-reader` were done *before* I was harvesting and printing the statistics, but pretty much every test was slower, and in some cases less accurate, with the larger model.
+
+**[Images used can be found here](https://github.com/teigJ/quarto-book-demo/tree/main/img)**
+
+### code-reader  
+#### broken.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/broken.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 95 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World" << std::endl;
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+Hello, World
+```
+**Result:** FAILURE - Should not have compiled. It added the semi-colon at the end of the line.  
+
+#### test-timeout.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-timeout.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 117 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <cmath>
+int main() {
+    double x = 1.0;
+    while (true) {
+        x = sqrt(x + 1.0);
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 124
+Status: TIMED OUT
+
+--- stdout ---
+SANDBOX: Execution timed out after 10 seconds
+```
+**Result:** SUCCESS - Timed out after 10 seconds as expected
+
+#### test-forkbomb.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-forkbomb.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 89 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <unistd.h>
+
+int main() {
+    while(true) {
+        fork();
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 124
+Status: TIMED OUT
+
+--- stdout ---
+SANDBOX: Execution timed out after 10 seconds
+```
+**Result:** SUCCESS - Same result as when testing `cpp` file directly with controller  
+
+#### test-memory.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-memory.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 141 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <vector>
+int main() {
+    std::vector<char> v;
+    while (true) {
+        v.insert(v.end(), 1024 * 1024, 'a');
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 137
+Status: KILLED (OOM or force kill)
+
+--- stdout ---
+Killed
+```
+**Result:** SUCCESS - Same result as when testing `cpp` file directly with controller  
+
+
+#### test-network.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-network.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 374 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <cstdlib>
+#include <iostream>
+
+int main() {
+    std::cout << "Attempting connection..." << std::endl;
+    int result = system("wget -q http://example.com -O /tmp/test 2>&1");
+    if (result != 0) {
+        std::cout << "call failed, code: " << result << std::endl;
+    } else {
+        std::cout << "call success TEST FAIL " << std::endl;
+    }
+    return result;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+Attempting connection...
+wget: bad address 'example.com'
+call failed, code: 256
+```
+**Result:** SUCCESS - Same result as when testing `cpp` file directly with controller
+
+- This image had single lines of code that wrapped onto the next line, and it correctly interpreted it  
+- Important test to pass  
+
+
+#### test-write.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 299 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <fstream>
+#include <iostream>
+
+int main() {
+    std::ofstream f("/etc/test-write.txt");
+    if (f.is_open()) {
+        f << "write succeeded" << std::endl;
+    }
+    std::cout << "READ-ONLY FAILURE" << std::endl;
+} else {
+    std::cout << "READ-ONLY SUCCESS" << std::endl;
+}
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 1
+Status: COMPILE FAILED
+
+--- stdout ---
+/sandbox/source.cpp:10:3: error: expected unqualified-id before 'else'
+   10 | } else {
+      |   ^~~~
+/sandbox/source.cpp:13:5: error: expected unqualified-id before 'return'
+   13 |     return 0;
+      |     ^~~~~~
+/sandbox/source.cpp:14:1: error: expected declaration before '}' token
+   14 | }
+      | ^
+
+--- stdout ---
+SANDBOX: Compilation failed
+```
+**Result:** FAILURE - `code-reader` misread the image and added a `}` and a new line where there were none, which resulted in compilation failure  
+
+- Second try, same issue. It could be because my `endl` has a cursive `l` that is throwing it off?  
+
+#### test-write-2.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write-2.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 305 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <fstream>
+#include <iostream>
+
+int main() {
+    std::ofstream f("/etc/test-write.txt");
+    if (f.is_open()) {
+        f << "write succeeded" << std::endl;
+    } else {
+        std::cout << "READ-ONLY FAILURE" << std::endl;
+    }
+    std::cout << "READ-ONLY SUCCESS" << std::endl;
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+READ-ONLY FAILURE
+READ-ONLY SUCCESS
+```
+**Result:** FAILURE - `code-reader` still misreading the image, although less egregiously this time  
+
+- With an intermittent "approval/edit" step, this wouldn't be an issue  
+	- If it is fully automated, it's a much bigger problem. I think the `} else {` is what is tripping it up now  
+
+
+#### test-write-3.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write-3.jpg 
+Sending 1 image(s) to Ollama (code-reader)...
+Received 313 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <fstream>
+#include <iostream>
+
+int main() {
+    std::ofstream f("/etc/test-write.txt");
+    if (f.is_open()) {
+        f << "write succeeded" << std::endl;
+        std::cout << "READ-ONLY FAILURE" << std::endl;
+    }
+    else {
+        std::cout << "READ-ONLY SUCCESS" << std::endl;
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+READ-ONLY SUCCESS
+```
+**Result:** SUCCESS - Same result as when testing `cpp` file directly with controller 
+
+- Putting `else` statement on a new line caused `code-reader` to finally translate the image correctly, resulting in a successful test  
+
+
+### code-reader-qwen9b
+#### broken.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/broken.jpg 
+Sending 1 image(s) to Ollama (code-reader-qwen9b)...
+
+--- Ollama Stats ---
+Total time: 1.47s
+Model load: 0.35s
+Prompt tokens: 1168
+Output tokens: 33
+--------------------
+
+Received 94 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World" << std::endl
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 1
+Status: COMPILE FAILED
+
+--- stdout ---
+/sandbox/source.cpp: In function 'int main()':
+/sandbox/source.cpp:4:45: error: expected ';' before 'return'
+    4 |     std::cout << "Hello, World" << std::endl
+      |                                             ^
+      |                                             ;
+    5 |     return 0;
+      |     ~~~~~~
+
+--- stdout ---
+SANDBOX: Compilation failed
+```
+**Result:** **SUCCESS**: Incredibly fast and accurate reading. `code-reader` failed this test by correcting the missing semi-colon, qwen passed  
+
+#### test-timeout.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-timeout.jpg 
+Sending 1 image(s) to Ollama (code-reader-qwen9b)...
+
+--- Ollama Stats ---
+Total time: 1.56s
+Model load: 0.33s
+Prompt tokens: 1266
+Output tokens: 50
+--------------------
+
+Received 117 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <cmath>
+int main() {
+    double x = 1.0;
+    while (true) {
+        x = sqrt(x + 1.0);
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 124
+Status: TIMED OUT
+
+--- stdout ---
+SANDBOX: Execution timed out after 10 seconds
+```
+**Result:** **SUCCESS** - again, very fast and accurate  
+
+#### test-forkbomb.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-forkbomb.jpg 
+Sending 1 image(s) to Ollama (code-reader-qwen9b)...
+
+--- Ollama Stats ---
+Total time: 1.25s
+Model load: 0.32s
+Prompt tokens: 1168
+Output tokens: 33
+--------------------
+
+Received 90 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <unistd.h>
+
+int main() {
+    while (true) {
+        fork();
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 124
+Status: TIMED OUT
+
+--- stdout ---
+SANDBOX: Execution timed out after 10 seconds
+```
+**Result:** **SUCCESS** - again, very fast and accurate  
+
+#### test-memory.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-memory.jpg 
+Sending 1 image(s) to Ollama (code-reader-qwen9b)...
+
+--- Ollama Stats ---
+Total time: 1.61s
+Model load: 0.29s
+Prompt tokens: 1280
+Output tokens: 59
+--------------------
+
+Received 141 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <vector>
+int main() {
+    std::vector<char> v;
+    while (true) {
+        v.insert(v.end(), 1024 * 1024, 'a');
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 137
+Status: KILLED (OOM or force kill)
+
+--- stdout ---
+Killed
+```
+**Result:** **SUCCESS** - again, very fast and accurate  
+
+#### test-network.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-network.jpg 
+Sending 1 image(s) to Ollama (code-reader-qwen9b)...
+
+--- Ollama Stats ---
+Total time: 2.86s
+Model load: 0.32s
+Prompt tokens: 2194
+Output tokens: 116
+--------------------
+
+Received 373 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <cstdlib>
+#include <iostream>
+
+int main() {
+    std::cout << "Attempting connection..." << std::endl;
+    int result = system("wget -q http://example.com -O /tmp/test 2>&1");
+    if (result != 0) {
+        std::cout << "call failed, code: " << result << std::endl;
+    } else {
+        std::cout << "call success TEST FAIL" << std::endl;
+    }
+    return result;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+Attempting connection...
+wget: bad address 'example.com'
+call failed, code: 256
+```
+**Result:** **SUCCESS** - again, very fast and accurate  
+
+#### test-write.jpg  
+```cpp
+teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write.jpg 
+Sending 1 image(s) to Ollama (code-reader-qwen9b)...
+
+--- Ollama Stats ---
+Total time: 2.60s
+Model load: 0.33s
+Prompt tokens: 2044
+Output tokens: 99
+--------------------
+
+Received 309 characters of C++ code from Ollama.
+
+--- Translated C++ ---
+#include <fstream>
+#include <iostream>
+
+int main() {
+    std::ofstream f("/etc/test-write.txt");
+    if (f.is_open()) {
+        f << "write succeeded" << std::endl;
+        std::cout << "READ-ONLY FAILURE" << std::endl;
+    } else {
+        std::cout << "READ-ONLY SUCCESS" << std::endl;
+    }
+    return 0;
+}
+----------------------
+
+Running in sandbox...
+Exit code: 0
+Status: SUCCESS
+
+--- stdout ---
+READ-ONLY SUCCESS
+```
+**Result:** **SUCCESS**: `code-reader` did not pass this test, and qwen3.5:9b did it in 3 seconds  
+
+#### test-write-2.jpg and test-write-3.jpg  
+
+- Ran tests, both succeeded equivalently to the above test  
+

@@ -1,4 +1,4 @@
-# Locally Run LLM on Morpheus {.unnumbered}
+# Locally Run LLM on Morpheus {.unnumbered}  
 I installed ollama and gemma4:26b as a test of running an LLM locally on the Weber server.  
 
 My summary is that it performed phenomenally and that I was very surprised at how well it did with the model size, though the Weber server are very clearly powerful. 
