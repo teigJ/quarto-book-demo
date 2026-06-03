@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="execution-environment" class="level2">
 <h2 class="anchored" data-anchor-id="execution-environment">Execution Environment</h2>
 <ul>
-<li>I have detailed some of the handwriting translation techiniques already<br>
+<li>I have detailed some of the handwriting translation techniques already<br>
 </li>
 <li>So I’ll start by explaining the execution environment that I build for the C++ code</li>
 </ul>
@@ -280,15 +280,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 <li><code>--tmpfs /tmp:size=50m</code>: mounts the temporary file system with a 50 mb size restriction<br>
 </li>
-<li><code>--memory 256m</code>: restricts RAM usage to 256mb<br>
+<li><code>--memory 256m</code>: restricts RAM usage to 256 mb<br>
 </li>
-<li><code>--memory-swap 256m</code>: sets the swap to the same as the restriction, effectively disabling memory swap.<br>
+<li><code>--memory-swap 256m</code>: sets the swap to the same as the restriction
+<ul>
+<li>This effectively disables memory swap.<br>
 </li>
+</ul></li>
 <li><code>--cpus 0.5</code>: throttles the container to only use up to half a CPU<br>
 </li>
-<li><code>--timeout 60</code>: makes the container close itself after 60 seconds<br>
+<li><code>--timeout 60</code>: makes the container close itself after 60 seconds
+<ul>
+<li>There are other timeout restriction limits on ollama, compilation, and execution, but having extra doesn’t hurt.<br>
 </li>
-<li><code>--cap-drop ALL</code>: removes all Linux kernel capabilities and priviledges<br>
+</ul></li>
+<li><code>--cap-drop ALL</code>: removes all Linux kernel capabilities and privileges<br>
 </li>
 <li><code>--user sandbox</code>: assigns the sandbox user created during image generation<br>
 </li>
@@ -326,7 +332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>First, I learned how to use ollama through its API to prompt the local model from inside a Python script. I also had to convert the prompt (and image using base64) into a json payload.</p>
 <p>I store the returned code and harvest and print some statistics that the API returns.<br>
 Now that I have the code, I simply use the same function that I built earlier to run it inside a podman container and get the output.</p>
-<p>I use my <code>pipeline.py</code> script to print things out and format them, but the assembly of all these components together really was that simple once I worked out some bugs.</p>
+<p>I use my <code>pipeline.py</code> script to print things out and format them, but the assembly of all these components together really was that simple once I worked out the bugs.</p>
 <p><strong>Here is an example of how it works using its actual output</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>split<span class="op">-</span>written<span class="op">-</span>code<span class="op">-</span><span class="fl">1.</span><span class="er">jpeg</span> <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>split<span class="op">-</span>written<span class="op">-</span>code<span class="op">-</span><span class="fl">2.</span><span class="er">jpeg</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">2</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
@@ -384,7 +390,7 @@ Now that I have the code, I simply use the same function that I built earlier to
 <h2 class="anchored" data-anchor-id="test-results">Test Results</h2>
 <p>Here, I’m going to include the results of all the tests for <code>code-reader</code> (gemma4:26b with Modelfile baked in) and <code>code-reader-qwen9b</code> (qwen3.5:9b with Modelfile baked in)</p>
 <p>My summary is that qwen outperformed gemma in accuracy and speed by a significant margin based upon these tests, and it is also less expensive in every way.</p>
-<p>The tests with <code>code-reader</code> were done <em>before</em> I was harvesting and printing the statistics, but pretty much every test was slower, and in some cases less accurate, with the larger model.</p>
+<p>Note: The tests with <code>code-reader</code> were done <em>before</em> I was harvesting and printing the statistics, but pretty much every test was slower, and less accurate in a couple cases.</p>
 <p><strong><a href="https://github.com/teigJ/quarto-book-demo/tree/main/img">Images used can be found here</a></strong></p>
 <section id="code-reader" class="level3">
 <h3 class="anchored" data-anchor-id="code-reader">code-reader</h3>
