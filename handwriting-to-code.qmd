@@ -1,7 +1,7 @@
 # Handwritten Code: Translation and Execution {.unnumbered}  
 ## Execution Environment  
 
-- I have detailed some of the handwriting translation techiniques already  
+- I have detailed some of the handwriting translation techniques already  
 - So I'll start by explaining the execution environment that I build for the C++ code  
 
 ### Podman container setup
@@ -37,11 +37,13 @@ The command is very large, so I'll break it down flag by flag
 - `--read-only`: makes the file system read-only  
 - `--read-only-tmpfs=false`: makes the temporary file system not read-only  
 - `--tmpfs /tmp:size=50m`: mounts the temporary file system with a 50 mb size restriction  
-- `--memory 256m`: restricts RAM usage to 256mb  
-- `--memory-swap 256m`: sets the swap to the same as the restriction, effectively disabling memory swap.  
+- `--memory 256m`: restricts RAM usage to 256 mb  
+- `--memory-swap 256m`: sets the swap to the same as the restriction
+    - This effectively disables memory swap.  
 - `--cpus 0.5`: throttles the container to only use up to half a CPU  
-- `--timeout 60`: makes the container close itself after 60 seconds  
-- `--cap-drop ALL`: removes all Linux kernel capabilities and priviledges  
+- `--timeout 60`: makes the container close itself after 60 seconds
+    - There are other timeout restriction limits on ollama, compilation, and execution, but having extra doesn't hurt.  
+- `--cap-drop ALL`: removes all Linux kernel capabilities and privileges  
 - `--user sandbox`: assigns the sandbox user created during image generation  
 - `-v ./hello.cpp:/sandbox/source.cpp:ro`: 
     - `./hello.cpp` is the example for the C++ file that is to be executed
@@ -78,7 +80,7 @@ First, I learned how to use ollama through its API to prompt the local model fro
 I store the returned code and harvest and print some statistics that the API returns.  
 Now that I have the code, I simply use the same function that I built earlier to run it inside a podman container and get the output.  
 
-I use my `pipeline.py` script to print things out and format them, but the assembly of all these components together really was that simple once I worked out some bugs.  
+I use my `pipeline.py` script to print things out and format them, but the assembly of all these components together really was that simple once I worked out the bugs.  
 
 **Here is an example of how it works using its actual output**
 ```cpp
@@ -140,7 +142,7 @@ Here, I'm going to include the results of all the tests for `code-reader` (gemma
 
 My summary is that qwen outperformed gemma in accuracy and speed by a significant margin based upon these tests, and it is also less expensive in every way.  
 
-The tests with `code-reader` were done *before* I was harvesting and printing the statistics, but pretty much every test was slower, and in some cases less accurate, with the larger model.
+Note: The tests with `code-reader` were done *before* I was harvesting and printing the statistics, but pretty much every test was slower, and less accurate in a couple cases.
 
 **[Images used can be found here](https://github.com/teigJ/quarto-book-demo/tree/main/img)**
 
