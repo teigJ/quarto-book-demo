@@ -144,10 +144,14 @@ My summary is that qwen outperformed gemma in accuracy and speed by a significan
 
 Note: The tests with `code-reader` were done *before* I was harvesting and printing the statistics, but pretty much every test was slower, and less accurate in a couple cases.
 
-**[Images used can be found here](https://github.com/teigJ/quarto-book-demo/tree/main/img)**
+**[All images used can be found here](https://github.com/teigJ/quarto-book-demo/tree/main/img)**
 
 ### code-reader  
+
+- Note: Click images to expand them  
+
 #### broken.jpg  
+![A broken Hello World](img/broken.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/broken.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -172,6 +176,7 @@ Hello, World
 **Result:** FAILURE - Should not have compiled. It added the semi-colon at the end of the line.  
 
 #### test-timeout.jpg  
+![Timeout after 10 seconds](img/test-timeout.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-timeout.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -198,6 +203,7 @@ SANDBOX: Execution timed out after 10 seconds
 **Result:** SUCCESS - Timed out after 10 seconds as expected
 
 #### test-forkbomb.jpg  
+![Ensuring Podman limits PIDs](img/test-forkbomb.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-forkbomb.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -224,6 +230,7 @@ SANDBOX: Execution timed out after 10 seconds
 **Result:** SUCCESS - Same result as when testing `cpp` file directly with controller  
 
 #### test-memory.jpg  
+![Quickly hitting memory limit](img/test-memory.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-memory.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -250,7 +257,8 @@ Killed
 **Result:** SUCCESS - Same result as when testing `cpp` file directly with controller  
 
 
-#### test-network.jpg  
+#### test-network.jpg 
+![Attemting a network connection](img/test-network.jpg){.lightbox width=50% fig-align="left"} 
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-network.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -288,6 +296,7 @@ call failed, code: 256
 
 
 #### test-write.jpg  
+![Try write outside tmp](img/test-write.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -333,6 +342,7 @@ SANDBOX: Compilation failed
 - Second try, same issue. It could be because my `endl` has a cursive `l` that is throwing it off?  
 
 #### test-write-2.jpg  
+![Try write outside tmp](img/test-write-2.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write-2.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -369,6 +379,7 @@ READ-ONLY SUCCESS
 
 
 #### test-write-3.jpg  
+![Try write outside tmp](img/test-write-3.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write-3.jpg 
 Sending 1 image(s) to Ollama (code-reader)...
@@ -405,6 +416,7 @@ READ-ONLY SUCCESS
 
 ### code-reader-qwen9b
 #### broken.jpg  
+![A broken Hello World](img/broken.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/broken.jpg 
 Sending 1 image(s) to Ollama (code-reader-qwen9b)...
@@ -446,6 +458,7 @@ SANDBOX: Compilation failed
 **Result:** **SUCCESS**: Incredibly fast and accurate reading. `code-reader` failed this test by correcting the missing semi-colon, qwen passed  
 
 #### test-timeout.jpg  
+![Timeout after 10 seconds](img/test-timeout.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-timeout.jpg 
 Sending 1 image(s) to Ollama (code-reader-qwen9b)...
@@ -480,6 +493,7 @@ SANDBOX: Execution timed out after 10 seconds
 **Result:** **SUCCESS** - again, very fast and accurate  
 
 #### test-forkbomb.jpg  
+![Ensuring Podman limits PIDs](img/test-forkbomb.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-forkbomb.jpg 
 Sending 1 image(s) to Ollama (code-reader-qwen9b)...
@@ -514,6 +528,7 @@ SANDBOX: Execution timed out after 10 seconds
 **Result:** **SUCCESS** - again, very fast and accurate  
 
 #### test-memory.jpg  
+![Quickly hitting memory limit](img/test-memory.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-memory.jpg 
 Sending 1 image(s) to Ollama (code-reader-qwen9b)...
@@ -548,6 +563,7 @@ Killed
 **Result:** **SUCCESS** - again, very fast and accurate  
 
 #### test-network.jpg  
+![Attemting a network connection](img/test-network.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-network.jpg 
 Sending 1 image(s) to Ollama (code-reader-qwen9b)...
@@ -589,6 +605,7 @@ call failed, code: 256
 **Result:** **SUCCESS** - again, very fast and accurate  
 
 #### test-write.jpg  
+![Try write outside tmp](img/test-write.jpg){.lightbox width=50% fig-align="left"}
 ```cpp
 teig@morpheus:~/cpp-sandbox$ python3 pipeline.py ../tj-ollama/img/test-write.jpg 
 Sending 1 image(s) to Ollama (code-reader-qwen9b)...

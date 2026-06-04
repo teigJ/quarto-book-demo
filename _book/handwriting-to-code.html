@@ -80,6 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-ebbe2af21149f8b601cc8cccd0f7b055.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -391,11 +394,24 @@ Now that I have the code, I simply use the same function that I built earlier to
 <p>Here, I’m going to include the results of all the tests for <code>code-reader</code> (gemma4:26b with Modelfile baked in) and <code>code-reader-qwen9b</code> (qwen3.5:9b with Modelfile baked in)</p>
 <p>My summary is that qwen outperformed gemma in accuracy and speed by a significant margin based upon these tests, and it is also less expensive in every way.</p>
 <p>Note: The tests with <code>code-reader</code> were done <em>before</em> I was harvesting and printing the statistics, but pretty much every test was slower, and less accurate in a couple cases.</p>
-<p><strong><a href="https://github.com/teigJ/quarto-book-demo/tree/main/img">Images used can be found here</a></strong></p>
+<p><strong><a href="https://github.com/teigJ/quarto-book-demo/tree/main/img">All images used can be found here</a></strong></p>
 <section id="code-reader" class="level3">
 <h3 class="anchored" data-anchor-id="code-reader">code-reader</h3>
+<ul>
+<li>Note: Click images to expand them</li>
+</ul>
 <section id="broken.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="broken.jpg">broken.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/broken.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="A broken Hello World"><img src="img/broken.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="A broken Hello World"></a></p>
+</figure>
+</div>
+<figcaption>A broken Hello World</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>broken<span class="op">.</span>jpg </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">95</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -419,6 +435,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-timeout.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-timeout.jpg">test-timeout.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-timeout.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Timeout after 10 seconds"><img src="img/test-timeout.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Timeout after 10 seconds"></a></p>
+</figure>
+</div>
+<figcaption>Timeout after 10 seconds</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>timeout<span class="op">.</span>jpg </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">117</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -444,6 +470,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-forkbomb.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-forkbomb.jpg">test-forkbomb.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-forkbomb.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Ensuring Podman limits PIDs"><img src="img/test-forkbomb.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Ensuring Podman limits PIDs"></a></p>
+</figure>
+</div>
+<figcaption>Ensuring Podman limits PIDs</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>forkbomb<span class="op">.</span>jpg </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">89</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -469,6 +505,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-memory.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-memory.jpg">test-memory.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-memory.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Quickly hitting memory limit"><img src="img/test-memory.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Quickly hitting memory limit"></a></p>
+</figure>
+</div>
+<figcaption>Quickly hitting memory limit</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>memory<span class="op">.</span>jpg </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">141</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -494,6 +540,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-network.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-network.jpg">test-network.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-network.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Attemting a network connection"><img src="img/test-network.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Attemting a network connection"></a></p>
+</figure>
+</div>
+<figcaption>Attemting a network connection</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>network<span class="op">.</span>jpg </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">374</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -531,6 +587,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-write.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-write.jpg">test-write.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-write.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Try write outside tmp"><img src="img/test-write.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Try write outside tmp"></a></p>
+</figure>
+</div>
+<figcaption>Try write outside tmp</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>write<span class="op">.</span>jpg </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">299</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -576,6 +642,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-write-2.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-write-2.jpg">test-write-2.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-write-2.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Try write outside tmp"><img src="img/test-write-2.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Try write outside tmp"></a></p>
+</figure>
+</div>
+<figcaption>Try write outside tmp</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>write<span class="op">-</span><span class="fl">2.</span><span class="er">jpg</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">305</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -613,6 +689,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-write-3.jpg" class="level4">
 <h4 class="anchored" data-anchor-id="test-write-3.jpg">test-write-3.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-write-3.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Try write outside tmp"><img src="img/test-write-3.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Try write outside tmp"></a></p>
+</figure>
+</div>
+<figcaption>Try write outside tmp</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>write<span class="op">-</span><span class="fl">3.</span><span class="er">jpg</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">)...</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>Received <span class="dv">313</span> characters of C<span class="op">++</span> code from Ollama<span class="op">.</span></span>
@@ -650,6 +736,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 <h3 class="anchored" data-anchor-id="code-reader-qwen9b">code-reader-qwen9b</h3>
 <section id="broken.jpg-1" class="level4">
 <h4 class="anchored" data-anchor-id="broken.jpg-1">broken.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/broken.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="A broken Hello World"><img src="img/broken.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="A broken Hello World"></a></p>
+</figure>
+</div>
+<figcaption>A broken Hello World</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>broken<span class="op">.</span>jpg </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">-</span>qwen9b<span class="op">)...</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -690,6 +786,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-timeout.jpg-1" class="level4">
 <h4 class="anchored" data-anchor-id="test-timeout.jpg-1">test-timeout.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-timeout.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Timeout after 10 seconds"><img src="img/test-timeout.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Timeout after 10 seconds"></a></p>
+</figure>
+</div>
+<figcaption>Timeout after 10 seconds</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>timeout<span class="op">.</span>jpg </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">-</span>qwen9b<span class="op">)...</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -723,6 +829,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-forkbomb.jpg-1" class="level4">
 <h4 class="anchored" data-anchor-id="test-forkbomb.jpg-1">test-forkbomb.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-forkbomb.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Ensuring Podman limits PIDs"><img src="img/test-forkbomb.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Ensuring Podman limits PIDs"></a></p>
+</figure>
+</div>
+<figcaption>Ensuring Podman limits PIDs</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>forkbomb<span class="op">.</span>jpg </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">-</span>qwen9b<span class="op">)...</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -756,6 +872,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-memory.jpg-1" class="level4">
 <h4 class="anchored" data-anchor-id="test-memory.jpg-1">test-memory.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-memory.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Quickly hitting memory limit"><img src="img/test-memory.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Quickly hitting memory limit"></a></p>
+</figure>
+</div>
+<figcaption>Quickly hitting memory limit</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>memory<span class="op">.</span>jpg </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">-</span>qwen9b<span class="op">)...</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -789,6 +915,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-network.jpg-1" class="level4">
 <h4 class="anchored" data-anchor-id="test-network.jpg-1">test-network.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-network.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Attemting a network connection"><img src="img/test-network.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Attemting a network connection"></a></p>
+</figure>
+</div>
+<figcaption>Attemting a network connection</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>network<span class="op">.</span>jpg </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">-</span>qwen9b<span class="op">)...</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -829,6 +965,16 @@ Now that I have the code, I simply use the same function that I built earlier to
 </section>
 <section id="test-write.jpg-1" class="level4">
 <h4 class="anchored" data-anchor-id="test-write.jpg-1">test-write.jpg</h4>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/test-write.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Try write outside tmp"><img src="img/test-write.jpg" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Try write outside tmp"></a></p>
+</figure>
+</div>
+<figcaption>Try write outside tmp</figcaption>
+</figure>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>teig<span class="er">@</span>morpheus<span class="op">:~/</span>cpp<span class="op">-</span>sandbox<span class="er">$</span> python3 pipeline<span class="op">.</span>py <span class="op">../</span>tj<span class="op">-</span>ollama<span class="op">/</span>img<span class="op">/</span>test<span class="op">-</span>write<span class="op">.</span>jpg </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Sending <span class="dv">1</span> image<span class="op">(</span>s<span class="op">)</span> to Ollama <span class="op">(</span>code<span class="op">-</span>reader<span class="op">-</span>qwen9b<span class="op">)...</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1290,6 +1436,38 @@ Now that I have the code, I simply use the same function that I built earlier to
   </div>
 </nav>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
