@@ -23,6 +23,7 @@ format:
       - darkly
     code-block-bg: true
     code-block-border-left: "#31BAE9"
+    lightbox: true
   pdf:
     documentclass: scrreprt
 

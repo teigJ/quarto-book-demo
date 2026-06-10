@@ -216,6 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#code-reader" id="toc-code-reader" class="nav-link" data-scroll-target="#code-reader">code-reader</a></li>
   <li><a href="#code-reader-qwen9b" id="toc-code-reader-qwen9b" class="nav-link" data-scroll-target="#code-reader-qwen9b">code-reader-qwen9b</a></li>
   </ul></li>
+  <li><a href="#frontend-demo---try-it-yourself" id="toc-frontend-demo---try-it-yourself" class="nav-link" data-scroll-target="#frontend-demo---try-it-yourself">Frontend Demo - Try It Yourself</a></li>
   </ul>
 </nav>
     </div>
@@ -1016,10 +1017,56 @@ Now that I have the code, I simply use the same function that I built earlier to
 <ul>
 <li>Ran tests, both succeeded equivalently to the above test</li>
 </ul>
-
-
 </section>
 </section>
+</section>
+<section id="frontend-demo---try-it-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="frontend-demo---try-it-yourself">Frontend Demo - Try It Yourself</h2>
+<p>I stitched together some of these elements and made a basic Python HTTP runner to deliver the translated code to the container to be ran, so there could be a frontend for this demo.</p>
+<ul>
+<li>It’s important to note that this is not capable of handling concurrent users.
+<ul>
+<li>Even just one user submitting a request while another user’s is loading will not work.</li>
+</ul></li>
+</ul>
+<p>When the service is started there is a simple frontend that will allow the user to upload an image of handwritten code</p>
+<ul>
+<li>see /home/teig/start.sh, as well as status.sh and stop.sh there</li>
+</ul>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/submission-demo.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Submission Screen"><img src="img/submission-demo.png" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Submission Screen"></a></p>
+</figure>
+</div>
+<figcaption>Submission Screen</figcaption>
+</figure>
+</div>
+<p>Then, there will be an intermediate “approval” step that will allow the user to edit the translated code, and then they can submit it afterwards</p>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/edit-demo.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16" title="Edit Screen"><img src="img/edit-demo.png" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Edit Screen"></a></p>
+</figure>
+</div>
+<figcaption>Edit Screen</figcaption>
+</figure>
+</div>
+<p>The submission screen will display the stdout, stderr, status, exit code, and the submitted code that was ran in the podman container.</p>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="img/result-demo.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Result Screen"><img src="img/result-demo.png" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:50.0%" alt="Result Screen"></a></p>
+</figure>
+</div>
+<figcaption>Result Screen</figcaption>
+</figure>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

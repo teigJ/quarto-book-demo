@@ -90,6 +90,16 @@
     ]
   },
   {
+    "objectID": "handwriting-to-code.html#frontend-demo---try-it-yourself",
+    "href": "handwriting-to-code.html#frontend-demo---try-it-yourself",
+    "title": "Handwritten Code: Translation and Execution",
+    "section": "Frontend Demo - Try It Yourself",
+    "text": "Frontend Demo - Try It Yourself\nI stitched together some of these elements and made a basic Python HTTP runner to deliver the translated code to the container to be ran, so there could be a frontend for this demo.\n\nIt’s important to note that this is not capable of handling concurrent users.\n\nEven just one user submitting a request while another user’s is loading will not work.\n\n\nWhen the service is started there is a simple frontend that will allow the user to upload an image of handwritten code\n\nsee /home/teig/start.sh, as well as status.sh and stop.sh there\n\n\n\n\n\n\n\n\nSubmission Screen\n\n\nThen, there will be an intermediate “approval” step that will allow the user to edit the translated code, and then they can submit it afterwards\n\n\n\n\n\n\n\nEdit Screen\n\n\nThe submission screen will display the stdout, stderr, status, exit code, and the submitted code that was ran in the podman container.\n\n\n\n\n\n\n\nResult Screen",
+    "crumbs": [
+      "Handwritten Code: Translation and Execution"
+    ]
+  },
+  {
     "objectID": "summary.html",
     "href": "summary.html",
     "title": "Summary",

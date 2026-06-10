@@ -648,3 +648,23 @@ READ-ONLY SUCCESS
 
 - Ran tests, both succeeded equivalently to the above test  
 
+## Frontend Demo - Try It Yourself  
+I stitched together some of these elements and made a basic Python HTTP runner to deliver the translated code to the container to be ran, so there could be a frontend for this demo. 
+
+- It's important to note that this is not capable of handling concurrent users. 
+    - Even just one user submitting a request while another user's is loading will not work. 
+
+When the service is started there is a simple frontend that will allow the user to upload an image of handwritten code  
+
+- see /home/teig/start.sh, as well as status.sh and stop.sh there  
+
+![Submission Screen](img/submission-demo.png){.lightbox width=50% fig-align="left"}
+
+Then, there will be an intermediate "approval" step that will allow the user to edit the translated code, and then they can submit it afterwards  
+
+![Edit Screen](img/edit-demo.png){.lightbox width=50% fig-align="left"}
+
+The submission screen will display the stdout, stderr, status, exit code, and the submitted code that was ran in the podman container.  
+
+![Result Screen](img/result-demo.png){.lightbox width=50% fig-align="left"}
+
