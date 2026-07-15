@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Locally Run LLM on Morpheus – book-test</title>
+<title>The Full Pipeline – book-test</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./handwriting-to-code.html" rel="next">
-<link href="./embedded-cpp-demo.html" rel="prev">
+<link href="./summary.html" rel="next">
+<link href="./handwriting-to-code.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -111,35 +111,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -152,7 +123,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./local-llm-morpheus-install.html">Locally Run LLM on Morpheus</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./handwritten-code-pipeline.html">The Full Pipeline</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -197,7 +168,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./local-llm-morpheus-install.html" class="sidebar-item-text sidebar-link active">
+  <a href="./local-llm-morpheus-install.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Locally Run LLM on Morpheus</span></a>
   </div>
 </li>
@@ -209,7 +180,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handwritten-code-pipeline.html" class="sidebar-item-text sidebar-link">
+  <a href="./handwritten-code-pipeline.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">The Full Pipeline</span></a>
   </div>
 </li>
@@ -235,12 +206,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#testing-handwriting-transliteration-with-gemma426b" id="toc-testing-handwriting-transliteration-with-gemma426b" class="nav-link active" data-scroll-target="#testing-handwriting-transliteration-with-gemma426b">Testing Handwriting Transliteration with Gemma4:26b</a></li>
-  <li><a href="#testing-full-syntax-c-handwriting-to-text" id="toc-testing-full-syntax-c-handwriting-to-text" class="nav-link" data-scroll-target="#testing-full-syntax-c-handwriting-to-text">Testing Full Syntax C++ Handwriting to Text</a>
+  <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link active" data-scroll-target="#try-it-yourself">Try It Yourself</a></li>
+  <li><a href="#full-app-migration" id="toc-full-app-migration" class="nav-link" data-scroll-target="#full-app-migration">Full App Migration</a></li>
+  <li><a href="#full-pipeline-load-testing" id="toc-full-pipeline-load-testing" class="nav-link" data-scroll-target="#full-pipeline-load-testing">Full Pipeline load testing</a>
   <ul class="collapse">
-  <li><a href="#modelfile-creation" id="toc-modelfile-creation" class="nav-link" data-scroll-target="#modelfile-creation">Modelfile creation</a></li>
-  <li><a href="#the-handwriting-code-sample" id="toc-the-handwriting-code-sample" class="nav-link" data-scroll-target="#the-handwriting-code-sample">The Handwriting Code Sample</a></li>
-  <li><a href="#notes-on-the-output" id="toc-notes-on-the-output" class="nav-link" data-scroll-target="#notes-on-the-output">Notes on the output</a></li>
+  <li><a href="#overall-stats" id="toc-overall-stats" class="nav-link" data-scroll-target="#overall-stats">Overall stats</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -250,7 +220,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Locally Run LLM on Morpheus</h1>
+<h1 class="title">The Full Pipeline</h1>
 </div>
 
 
@@ -267,162 +237,157 @@ window.Quarto = {
 </header>
 
 
-<p>I installed ollama and gemma4:26b as a test of running an LLM locally on the Weber server.</p>
-<p>My summary is that it performed phenomenally and that I was very surprised at how well it did with the model size, though the Weber server are very clearly powerful.</p>
-<section id="testing-handwriting-transliteration-with-gemma426b" class="level3">
-<h3 class="anchored" data-anchor-id="testing-handwriting-transliteration-with-gemma426b">Testing Handwriting Transliteration with Gemma4:26b</h3>
-<p>I ran the same handwriting test that I did on gemma4-e2b, and on the “Big 3” proprietary models<br>
-The results were identical to the proprietary models <img src="img/handwriting-test-1.jpeg" class="img-fluid" style="width:80.0%" alt="handwriting-to-text"></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>This is a test. Can AI recognize</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>my handwriting and translate it to text</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>This is a test. Is print more easily read by</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>AI and turned into text on the computer.</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>My print is not very clean, so this should</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>be pretty good test.</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>If this works, I will try pseudo code next</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>This is fairly uninteresting, as a model this size should accurately do OCR based on gemma4-e2b doing well at it</li>
-<li>I also did the <code>pseudocode-to-text.jpg</code> test and it did equivalently well</li>
-</ul>
+<section id="try-it-yourself" class="level3">
+<h3 class="anchored" data-anchor-id="try-it-yourself"><a href="http://morpheus.users.weber.edu:8000/">Try It Yourself</a></h3>
 </section>
-<section id="testing-full-syntax-c-handwriting-to-text" class="level2">
-<h2 class="anchored" data-anchor-id="testing-full-syntax-c-handwriting-to-text">Testing Full Syntax C++ Handwriting to Text</h2>
-<section id="modelfile-creation" class="level3">
-<h3 class="anchored" data-anchor-id="modelfile-creation">Modelfile creation</h3>
-<p>I created a <code>Modelfile</code> that allows you to “bake in” certain parameters like <code>temperature</code> or <code>top_p</code> and certain system instructions that will alter the behavior of the model</p>
+<section id="full-app-migration" class="level2">
+<h2 class="anchored" data-anchor-id="full-app-migration">Full App Migration</h2>
+<p>I have migrated the demo into a much more robust Flask app, and it now supports several more features.</p>
 <ul>
-<li>Any <code>PARAMETER</code> in a Modelfile can be set at runtime, but doing this allows it to automatically be set</li>
+<li>Session
+<ul>
+<li>A user has a session that keeps track of all the submissions (the timestamp, image, code results, etc.)</li>
+</ul></li>
+<li>Session History
+<ul>
+<li>This is where the user can view all the information tracked by the current session in a summary screen</li>
+<li>Includes an easy-to-read PDF export</li>
+</ul></li>
+<li>Sessions History (history of all sessions)
+<ul>
+<li>A history of the current and past sessions, so progress isn’t accidentally lost</li>
+</ul></li>
+<li>New Session
+<ul>
+<li>A user can start a new session anytime they choose</li>
+<li>Once a session is ended, it is considered “archived” and cannot be changed</li>
+</ul></li>
 </ul>
-<p>My <code>Modelfile</code> is very simple, but it can already be seen how it alters its behaviour (and not always in a good way)</p>
+<p>User sessions are built using a UUID system, so there is no login/logout or user state. The user’s session UUIDs are stored for 30 days in their cookies locally, and the site generates based upon that, using the information stored in the DB (and the images stored on the disk)</p>
 </section>
-<section id="the-handwriting-code-sample" class="level3">
-<h3 class="anchored" data-anchor-id="the-handwriting-code-sample">The Handwriting Code Sample</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="img/code-to-text.jpeg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="code-to-text"><img src="img/code-to-text.jpeg" class="img-fluid figure-img" style="width:80.0%" alt="code-to-text"></a></p>
-<figcaption>code-to-text</figcaption>
+<section id="full-pipeline-load-testing" class="level2">
+<h2 class="anchored" data-anchor-id="full-pipeline-load-testing">Full Pipeline load testing</h2>
+<p>I made a <code>load_test.py</code> script that allows for testing the full pipeline with concurrent requests.</p>
+<p>I ran 5 consecutive load tests, each with 10 users and a different image each to go through the whole process each time.</p>
+<p>Below are two different figures that I made based on the results of those tests.</p>
+<p>The first shows the increasing wait time for each user, and the second shows the variance accounting for the increasing queue time.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">16.27</span>, <span class="fl">18.28</span>, <span class="fl">20.65</span>, <span class="fl">22.92</span>, <span class="fl">25.32</span>, <span class="fl">27.47</span>, <span class="fl">29.69</span>, <span class="fl">32.43</span>, <span class="fl">35.17</span>, <span class="fl">37.53</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>           <span class="fl">17.85</span>, <span class="fl">19.52</span>, <span class="fl">21.31</span>, <span class="fl">22.99</span>, <span class="fl">24.80</span>, <span class="fl">26.73</span>, <span class="fl">28.46</span>, <span class="fl">30.29</span>, <span class="fl">32.15</span>, <span class="fl">34.04</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>           <span class="fl">12.61</span>, <span class="fl">14.14</span>, <span class="fl">15.71</span>, <span class="fl">17.51</span>, <span class="fl">19.11</span>, <span class="fl">20.73</span>, <span class="fl">22.25</span>, <span class="fl">24.02</span>, <span class="fl">25.47</span>, <span class="fl">27.35</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="fl">9.62</span>, <span class="fl">12.79</span>, <span class="fl">16.02</span>, <span class="fl">19.05</span>, <span class="fl">22.72</span>, <span class="fl">25.45</span>, <span class="fl">28.85</span>, <span class="fl">31.67</span>, <span class="fl">35.50</span>, <span class="fl">38.88</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            <span class="fl">4.89</span>,  <span class="fl">6.65</span>,  <span class="fl">8.44</span>, <span class="fl">10.20</span>, <span class="fl">12.00</span>, <span class="fl">13.78</span>, <span class="fl">15.49</span>, <span class="fl">17.29</span>, <span class="fl">19.03</span>, <span class="fl">20.86</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> times,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">run =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">each =</span> <span class="dv">10</span>)),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">user_position =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">times =</span> <span class="dv">5</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> user_position, <span class="at">y =</span> time, <span class="at">color =</span> run)) <span class="sc">+</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pipeline Completion Steadily Increases"</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"User position (order of finish)"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Elapsed time since test start (seconds)"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Run"</span>) <span class="sc">+</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-load-times" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-load-times-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="handwritten-code-pipeline_files/figure-html/fig-load-times-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Load test completion time by user order, across 5 test runs"><img src="handwritten-code-pipeline_files/figure-html/fig-load-times-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-load-times-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Load test completion time by user order, across 5 test runs
+</figcaption>
 </figure>
 </div>
-<section id="handwritten-c-to-text-without-modelfile-config" class="level4">
-<h4 class="anchored" data-anchor-id="handwritten-c-to-text-without-modelfile-config">Handwritten C++ to Text without Modelfile config</h4>
-<ul>
-<li>For both tests I will have “thinking” on</li>
-</ul>
-<div id="60f3414d" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bits/stdc++.h&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">//int main() {</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="dv">29</span><span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> cnt <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" is NOT prime"</span><span class="op">;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Loop to count divisors</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">*</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>n <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                cnt<span class="op">++;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>cnt <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="co">// n is divisible by more than 2 nums</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>            cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" is NOT prime"</span><span class="op">;</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" is prime"</span><span class="op">;</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">//}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>29 is prime</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>0</code></pre>
 </div>
 </div>
 <ul>
-<li>The above snippet should also have run at the time of the compilation of the notebook</li>
-<li>I had to manually comment out the main definition and closing bracket because the interpreter doesn’t like the <code>main()</code> definition for some reason</li>
-</ul>
-</section>
-<section id="handwritten-c-to-text-with-modelfile-config" class="level4">
-<h4 class="anchored" data-anchor-id="handwritten-c-to-text-with-modelfile-config">Handwritten C++ to Text WITH Modelfile config</h4>
+<li>Completion time increases steadily with each additional consecutive user in every run
 <ul>
-<li>I will not be attempting to run the code here</li>
-<li>I also want to note that it initially output it without tabs, but after I asked for it to put the tabs in “like in the image” it did.</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bits/stdc++.h&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="dv">29</span><span class="op">;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> cnt <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" is NOT prime"</span><span class="op">;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">*</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span> <span class="co">// Count divisors</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>n <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                cnt<span class="op">++;</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>cnt <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="co">// n is divisible by more than 2 nums</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            Cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" is NOT prime"</span><span class="op">;</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            Cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" is prime"</span><span class="op">;</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-</section>
-<section id="notes-on-the-output" class="level3">
-<h3 class="anchored" data-anchor-id="notes-on-the-output">Notes on the output</h3>
-<p><strong>No Modelfile</strong><br>
-- The config-less model automatically added curly braces to the single line if statements<br>
-- It correctly interpreted the written handwriting<br>
-- It explained (not included here) what the algorithm was doing<br>
-- Even the Big O for the solution O(<span class="math inline">\(\sqrt{n}\)</span>)<br>
-<strong>With Modelfile</strong><br>
-- Did not add curly braces or fix issues (as specified by the config “do not fix bugs”)<br>
-- It did incorrectly interpret <code>cout</code> as <code>Cout</code>, and it interpretted its mistake in reading it at a mistake on behalf of the student:<br>
-<code>The user's code has `Cout` (capital C). I must not fix this.</code><br>
-- From the “thinking” output of the model<br>
-- This makes the output worse, but I think that the model giving grace toward the student during the transliteration phase could fix this issue</p>
-<section id="the-stats" class="level4">
-<h4 class="anchored" data-anchor-id="the-stats">The Stats:</h4>
-<p><strong>No Modelfile</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="an">total duration:</span><span class="co">       17.023732221s</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">load duration:</span><span class="co">        351.532045ms</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">prompt eval count:</span><span class="co">    283 token(s)</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">prompt eval duration:</span><span class="co"> 69.10374ms</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="an">prompt eval rate:</span><span class="co">     4095.29 tokens/s</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="an">eval count:</span><span class="co">           1815 token(s)</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="an">eval duration:</span><span class="co">        13.914118573s</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="an">eval rate:</span><span class="co">            130.44 tokens/s</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>With Modelfile</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="an">total duration:</span><span class="co">       21.960650471s</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">load duration:</span><span class="co">        339.849685ms</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">prompt eval count:</span><span class="co">    602 token(s)</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="an">prompt eval duration:</span><span class="co"> 53.818034ms</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="an">prompt eval rate:</span><span class="co">     11185.84 tokens/s</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="an">eval count:</span><span class="co">           2370 token(s)</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="an">eval duration:</span><span class="co">        18.37346049s</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="an">eval rate:</span><span class="co">            128.99 tokens/s</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<li>This is consistent with a single-threaded bottleneck (the local LLM OCR process) queueing requests.</li>
+</ul></li>
+<li>Run 5 starts fastest and stays lowest throughout, while Runs 1–4 cluster closer together
 <ul>
-<li>The model without the Modelfile configuration ran more quickly and accurately, but did help fix things as expected.<br>
-</li>
-<li>I suspect that the smaller context window and less “thinking” about how to alter its output made it output more quickly<br>
-</li>
-<li>Sometimes the “thinking” seems to trip the model up. Earlier, I was getting less accurate and much more expensive output with thinking on for the handwriting transliteration. I could explore this further in the future.</li>
+<li>This matches my manual use of the LLM for OCR, occasionally it gets hung up <em>or</em> processes very quickly.</li>
+<li>This variance has occured with the same image being translated over and over, so I don’t believe it likely that it differs entirely based on input.</li>
+</ul></li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>deltas <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(run) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(user_position) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">delta =</span> time <span class="sc">-</span> <span class="fu">lag</span>(time)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(delta))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(deltas, <span class="fu">aes</span>(<span class="at">x =</span> user_position, <span class="at">y =</span> delta, <span class="at">color =</span> run)) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"OCR Bottleneck Adds ~2 Seconds per Additional User"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Nth consecutive user"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Added time vs. previous user (seconds)"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Run"</span>) <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-marginal-delay" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marginal-delay-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="handwritten-code-pipeline_files/figure-html/fig-marginal-delay-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Marginal time added per additional consecutive user, by run"><img src="handwritten-code-pipeline_files/figure-html/fig-marginal-delay-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marginal-delay-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Marginal time added per additional consecutive user, by run
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Most runs add a fairly consistent ~1–2 seconds per additional consecutive user
+<ul>
+<li>gives a reasonable estimate of the actual per-request cost of the local LLM doing OCR under load.</li>
+</ul></li>
+<li>Run 4 stands out with a higher (~3–3.8s) and less consistent cost, indicating the bottleneck isn’t always stable.
+<ul>
+<li>It may be worth investigating what factors contributed to this inconsistency, and if the LLM can be made to return more quickly and consistently under different parameters</li>
+</ul></li>
+</ul>
+<section id="overall-stats" class="level3">
+<h3 class="anchored" data-anchor-id="overall-stats">Overall stats</h3>
+<ul>
+<li>Count: 50</li>
+<li>Sum: 1091.95s</li>
+<li>Mean: 21.839s</li>
+<li>Median: 21.085s</li>
+<li>Largest: 38.88s</li>
+<li>Smallest: 4.89s</li>
+<li>Range: 33.99s</li>
+<li>Std. Deviation: 8.18s</li>
+</ul>
+<p><strong>Images used:</strong></p>
+<ul>
+<li>test-write.jpg</li>
+<li>test-network.jpg</li>
+<li>code-to-text.jpg</li>
+<li>code-to-text-2.jpeg</li>
+<li>code-to-text-3.jpeg</li>
 </ul>
 
 
-</section>
 </section>
 </section>
 
@@ -829,13 +794,13 @@ The results were identical to the proprietary models <img src="img/handwriting-t
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./embedded-cpp-demo.html" class="pagination-link" aria-label="Embedded C++ Code in a Quarto book">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Embedded C++ Code in a Quarto book</span>
+      <a href="./handwriting-to-code.html" class="pagination-link" aria-label="Handwritten Code: Translation and Execution">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Handwritten Code: Translation and Execution</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./handwriting-to-code.html" class="pagination-link" aria-label="Handwritten Code: Translation and Execution">
-        <span class="nav-page-text">Handwritten Code: Translation and Execution</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

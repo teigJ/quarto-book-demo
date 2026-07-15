@@ -11,6 +11,7 @@ book:
     - embedded-cpp-demo.qmd
     - local-llm-morpheus-install.qmd
     - handwriting-to-code.qmd
+    - handwritten-code-pipeline.qmd
     - summary.qmd
     - references.qmd
 jupyter: xcpp17
