@@ -114,3 +114,76 @@ ggplot(deltas, aes(x = user_position, y = delta, color = run)) +
 - code-to-text.jpg
 - code-to-text-2.jpeg
 - code-to-text-3.jpeg
+
+## Load Testing with varied images  
+I adjusted the `load_test.py` script to be able to handle different images, and I reran the 10 concurrent users test with 5 different images (each submitted twice by a different "user")  
+
+```{r}
+#| label: fig-load-times-varied
+#| fig-cap: "Load test completion time by user order, across 5 test runs (5 distinct images, each submitted twice)"
+#| code-fold: true
+
+library(ggplot2)
+
+times <- c(4.66, 7.47, 9.29, 15.22, 19.76, 22.12, 23.66, 26.38, 31.22, 34.23,
+           4.68, 7.05, 12.55, 13.21, 17.97, 18.96, 25.52, 29.73, 31.56, 34.51,
+           12.44, 18.76, 20.29, 26.07, 28.47, 29.01, 34.14, 34.41, 41.84, 43.66,
+           8.97, 9.67, 10.69, 17.15, 18.93, 19.95, 21.35, 26.23, 28.95, 34.71,
+           12.65, 14.79, 21.21, 22.66, 25.38, 29.98, 32.94, 35.69, 37.63, 39.95)
+
+df_varied <- data.frame(
+  time = times,
+  run = factor(rep(1:5, each = 10)),
+  user_position = rep(1:10, times = 5)
+)
+
+ggplot(df_varied, aes(x = user_position, y = time, color = run)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2) +
+  scale_x_continuous(breaks = 1:10) +
+  labs(title = "Pipeline Completion Time with Varied Image Content",
+       x = "Submission position (order of finish)",
+       y = "Elapsed time since test start (seconds)",
+       color = "Run") +
+  theme_minimal(base_size = 13)
+```
+
+- The times are less strictly linear, but still follow a fairly consistent pattern, and are all within an acceptable time frame. 
+
+```{r}
+#| label: fig-marginal-delay-varied
+#| fig-cap: "Marginal time added per additional consecutive submission, by run (varied images)"
+#| code-fold: true
+#| message: false
+
+library(dplyr)
+
+deltas_varied <- df_varied %>%
+  group_by(run) %>%
+  arrange(user_position) %>%
+  mutate(delta = time - lag(time)) %>%
+  filter(!is.na(delta))
+
+ggplot(deltas_varied, aes(x = user_position, y = delta, color = run)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2) +
+  scale_x_continuous(breaks = 2:10) +
+  labs(title = "OCR Bottleneck Cost with Varied Image Content",
+       x = "Nth consecutive submission",
+       y = "Added time vs. previous submission (seconds)",
+       color = "Run") +
+  theme_minimal(base_size = 13)
+```
+
+The variance here has a much greater difference from run to run, and also varies much more than the single image tests. This seems to indicate a closer to real-world example of 10 concurrent users.  
+
+The time added per consecutive user is much greater, but still within a very reasonable threshold, and all 50 submissions succeeding without needing to be edited is a great sign for the consistency of the OCR.  
+
+
+### My Takeaway (after improving the test)
+
+- Less than a third of the submissions take more than 4 seconds to process, a tenth of them more than 6 seconds, none of them more than 7. 
+  - The site should be able to handle 10 users submitting at the exact same moment, and if there are less than 20 users actively using the site then load times should remain acceptable. 
+  - Above that number, we may begin to run into issues, though this should only happen right before due dates, and if several classes are using the tool. I don't imagine that more than 20 students from a 40 student class would be submitting at the same time if it is used as a homework tool. 
+
+- The primary bottleneck is the OCR, so I could attempt to see if it is possible or better to run multiple instances of the LLMs doing the translation, but I suspect that the performance cost of multiple instances may actually increase load times overall. 
